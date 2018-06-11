@@ -36,6 +36,7 @@ odoo.define('web_widget_x2many_2d_matrix.widget', function (require) {
         is_numeric: false,
         show_row_totals: true,
         show_column_totals: true,
+        show_labels:true,
         // this will be filled with the model's fields_get
         fields: {},
         // Store fields used to fill HTML attributes
@@ -67,6 +68,7 @@ odoo.define('web_widget_x2many_2d_matrix.widget', function (require) {
             this.field_editability = node.attrs.field_editability || this.field_editability;
             this.show_row_totals = this.parse_boolean(node.attrs.show_row_totals || '1');
             this.show_column_totals = this.parse_boolean(node.attrs.show_column_totals || '1');
+            this.show_labels = this.parse_boolean(node.attrs.show_labels || '1'); 
             return this._super(field_manager, node);
         },
 
@@ -77,7 +79,11 @@ odoo.define('web_widget_x2many_2d_matrix.widget', function (require) {
             {
                 if(many2one_as_name)
                 {
-                    return row[field][1];
+                    if (this.show_label) {
+                        return row[field][1]; }
+                    else {
+                        return row[field][1].substr(row[field][1].indexOf(":") + 1);
+                     }                
                 }
                 else
                 {
